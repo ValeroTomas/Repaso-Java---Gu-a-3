@@ -4,9 +4,9 @@ import com.repaso.mensajeria.Model.Usuario;
 import com.repaso.mensajeria.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.util.StringUtils.capitalize;
 
@@ -27,5 +27,9 @@ public class UsuarioService {
 
     public List<Usuario> obtenerUsuarios(){
         return usuarioRepository.findAll();
+    }
+
+    public Optional<Usuario> buscarUsuarioPorEmail(String email){
+    return usuarioRepository.findByEmail(email);
     }
 }

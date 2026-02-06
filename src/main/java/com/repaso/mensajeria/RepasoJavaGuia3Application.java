@@ -1,6 +1,5 @@
 package com.repaso.mensajeria;
 
-import com.repaso.mensajeria.Model.Usuario;
 import com.repaso.mensajeria.Repository.UsuarioRepository;
 import com.repaso.mensajeria.Service.Components.Notificador;
 import org.jspecify.annotations.NonNull;
@@ -13,12 +12,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class RepasoJavaGuia3Application implements CommandLineRunner {
 
 	private final Notificador notificador;
-	private final UsuarioRepository usuarioRepository;
+
 
 	@Autowired
 	public RepasoJavaGuia3Application(Notificador notificador, UsuarioRepository usuarioRepository) {
 		this.notificador = notificador;
-		this.usuarioRepository = usuarioRepository;
 	}
 
 	public static void main(String[] args) {
