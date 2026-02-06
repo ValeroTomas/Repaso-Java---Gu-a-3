@@ -1,6 +1,7 @@
 package com.repaso.mensajeria;
 
 import com.repaso.mensajeria.Service.Components.Notificador;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,7 +22,7 @@ public class RepasoJavaGuia3Application implements CommandLineRunner {
 	}
 
 	@Override
-	public void run(String... args) throws Exception {
+	public void run(String @NonNull ... args) throws Exception {
 		notificador.notificar("Hola mundo");
 	}
 }
