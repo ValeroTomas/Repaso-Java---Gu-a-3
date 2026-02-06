@@ -1,7 +1,7 @@
 package com.repaso.mensajeria.Model;
 
 import jakarta.persistence.*;
-import org.antlr.v4.runtime.misc.NotNull;
+import jakarta.validation.constraints.Email;
 
 @Entity
 public class Usuario {
@@ -13,6 +13,8 @@ public class Usuario {
 
     private String nombre;
 
+    @Email
+    @Column(unique = true)
     private String email;
 
     public Usuario(String nombre, String email) {
@@ -22,6 +24,26 @@ public class Usuario {
 
     public Usuario() {
 
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

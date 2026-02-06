@@ -28,7 +28,5 @@ public class RepasoJavaGuia3Application implements CommandLineRunner {
 	@Override
 	public void run(String @NonNull ... args) throws Exception {
 		notificador.notificar("Hola mundo");
-		usuarioRepository.save(new Usuario("Juan", "juancito@gmail.com"));
-		System.out.println(usuarioRepository.findByEmail("juancito@gmail.com"));
 	}
 }
