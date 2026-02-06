@@ -1,6 +1,6 @@
 package com.repaso.mensajeria.Service.Components;
 
-import com.repaso.mensajeria.Service.IMensajeServicio;
+import com.repaso.mensajeria.Service.Interface.IMensajeServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

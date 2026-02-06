@@ -1,6 +1,6 @@
-package com.repaso.mensajeria.Service.Components;
+package com.repaso.mensajeria.Service;
 
-import com.repaso.mensajeria.Service.IMensajeServicio;
+import com.repaso.mensajeria.Service.Interface.IMensajeServicio;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
