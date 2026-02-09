@@ -21,6 +21,11 @@ public class UsuarioController {
 
     @PostMapping(value = "/guardar")
     public ResponseEntity<String> guardarUsuario(@RequestBody Usuario usuario){
+
+        if (usuario.getNombre().isEmpty() || usuario.getEmail().isEmpty()) {
+            return ResponseEntity.badRequest().body("El nombre y el email son obligatorios");
+        }
+
         try {
             usuarioService.guardarUsuario(usuario);
             return ResponseEntity.status(HttpStatus.CREATED).body("Usuario creado correctamente");
