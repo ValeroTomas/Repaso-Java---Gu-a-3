@@ -36,6 +36,9 @@ public class UsuarioController {
 
     @GetMapping(value = "/obtener")
     public ResponseEntity<List<Usuario>> obtenerUsuarios(){
+        if(usuarioService.obtenerUsuarios().isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(usuarioService.obtenerUsuarios());
     }
 

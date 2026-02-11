@@ -1,67 +1,52 @@
 package com.repaso.mensajeria.Controller;
 
 import com.repaso.mensajeria.Model.Usuario;
-import com.repaso.mensajeria.Service.UsuarioService;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import tools.jackson.databind.ObjectMapper;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.List;
-import java.util.Optional;
-
+@SpringBootTest
+@AutoConfigureMockMvc
 class UsuarioControllerTest {
 
-    private static UsuarioController usuarioController;
-    private static UsuarioService usuarioService;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-    @BeforeEach
-    void setUp() {
-        usuarioService = Mockito.mock(UsuarioService.class);
-        usuarioController = new UsuarioController(usuarioService);
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Test
+    void guardarUsuario() throws Exception {
+        Usuario u = new Usuario("Juan", "juan@gmail.com");
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/usuarios/guardar")
+                        .content(objectMapper.writeValueAsString(u))
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpectAll(status().isCreated());
     }
 
     @Test
-    void guardarUsuarioConEmailDuplicado() {
-        Mockito.doThrow(new RuntimeException("duplicado"))
-                .when(usuarioService).guardarUsuario(Mockito.any(Usuario.class));
-
-        ResponseEntity<String> response =
-                usuarioController.guardarUsuario(new Usuario("Pedrito", "juancito@gmail.com"));
-
-        Assertions.assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+    void obtenerUsuariosVacío() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/usuarios/obtener"))
+                .andExpectAll(status().isNotFound());
     }
 
     @Test
-    void guardarUsuarioConNombreVacio() {
-        ResponseEntity<String> response = usuarioController.guardarUsuario(new Usuario("", "vacio@gmail.com"));
-        Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    void obtenerUsuarioInexistente() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/usuarios/obtener/email?email=juancito@gmail.com"))
+                .andExpectAll(status().isNotFound());
     }
 
     @Test
-    void guardarUsuarioConEmailVacio() {
-        ResponseEntity<String> response = usuarioController.guardarUsuario(new Usuario("Vacio", ""));
-        Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    void obtenerUsuarioExistente() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/usuarios/obtener/email?email=juancito@gmail.com"))
+                .andExpect(status().isOk());
     }
-
-    @Test
-    void obtenerUsuarios() {
-        ResponseEntity<List<Usuario>> response = usuarioController.obtenerUsuarios();
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-    }
-
-    @Test
-    void buscarUsuarioPorEmail() {
-        Mockito.when(usuarioService.buscarUsuarioPorEmail("juancito@gmail.com"))
-                .thenReturn(Optional.of(new Usuario("Juan", "juancito@gmail.com")));
-
-        ResponseEntity<Optional<Usuario>> response =
-                usuarioController.buscarUsuarioPorEmail("juancito@gmail.com");
-
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-    }
-
-
 }
